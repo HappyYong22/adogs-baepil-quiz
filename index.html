@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>도령·아씨 배필 고사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    background-color: #f2ede4;
+    font-family: 'Noto Serif KR', 'Gowun Batang', serif;
+    color: #2c241e;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+  .exam-card {
+    width: 100%;
+    max-width: 480px;
+    background-color: #fdfaf3;
+    border: 1.5px solid #8e8071;
+    padding: 14px 12px 20px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  .inner-border {
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border: 0.8px solid #b8ab9d;
+    pointer-events: none;
+  }
+  .norigae { text-align: center; margin-top: -2px; margin-bottom: 3px; }
+  .norigae svg { width: 20px; height: 30px; fill: #8d281e; }
+  .header { text-align: center; margin-bottom: 12px; }
+  .title { font-size: 19px; font-weight: 700; letter-spacing: 1px; color: #1a1512; }
+  .subtitle { font-size: 11px; color: #6d6256; margin-top: 3px; }
+
+  .q-container { display: flex; flex-direction: column; gap: 8px; }
+  .q-box {
+    display: flex;
+    border: 1.2px solid #8d281e;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .q-num {
+    width: 32px;
+    background-color: #8d281e;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .q-body { flex: 1; padding: 6px 9px; display: flex; flex-direction: column; gap: 5px; }
+  .q-text { font-size: 11.5px; font-weight: 600; line-height: 1.35; color: #1a1512; }
+  .options { display: flex; gap: 20px; font-size: 12px; }
+  
+  /* 터치 선택 옵션 */
+  .opt-item {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+  .circle {
+    width: 14px;
+    height: 14px;
+    border: 1.2px solid #332a24;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .opt-item.selected .circle {
+    border-color: #c92a2a;
+  }
+  .opt-item.selected .circle::after {
+    content: "✔";
+    color: #c92a2a;
+    font-size: 13px;
+    font-weight: 900;
+    position: absolute;
+    top: -2px;
+    left: 1px;
+  }
+
+  /* 하단 채점란 */
+  .bottom-box {
+    border: 1.2px solid #8d281e;
+    display: flex;
+    background: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    min-height: 56px;
+  }
+  .guide-area {
+    flex: 1;
+    padding: 6px 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .guide-area p { font-size: 10.5px; color: #4a4037; }
+  .score-txt { font-size: 12.5px; font-weight: 700; color: #8d281e; }
+  
+  .submit-btn {
+    width: 85px;
+    border: none;
+    border-left: 1.2px solid #8d281e;
+    background: #8d281e;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .submit-btn:active { background: #6b1f16; }
+  .stamp-result {
+    display: none;
+    width: 85px;
+    border-left: 1.2px solid #8d281e;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8d281e;
+    font-weight: 700;
+    background: #fff0f0;
+  }
+
+  .footer-msg {
+    text-align: center;
+    font-size: 10.5px;
+    color: #6b5e52;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="exam-card">
+  <div class="inner-border"></div>
+
+  <div class="norigae">
+    <svg viewBox="0 0 24 38">
+      <circle cx="12" cy="7" r="5" fill="#8d281e"/>
+      <circle cx="12" cy="7" r="2.5" fill="#fdfaf3"/>
+      <path d="M11 12 L13 12 L13 22 L11 22 Z" fill="#8d281e"/>
+      <path d="M9 22 C9 22, 12 25, 12 30 C12 25, 15 22, 15 22 Z" fill="#8d281e"/>
+      <path d="M10 27 L14 27 L13 38 L11 38 Z" fill="#8d281e"/>
+    </svg>
+  </div>
+
+  <div class="header">
+    <h1 class="title">도령·아씨 배필(配匹) 고사</h1>
+    <p class="subtitle">配匹 문항을 읽고 알맞은 답에 표식 ✔를 하시오</p>
+  </div>
+
+  <div class="q-container">
+    <!-- 1번 (정답: 2번 아닐 비) -->
+    <div class="q-box">
+      <div class="q-num">1</div>
+      <div class="q-body">
+        <div class="q-text">강아지는 귀엽고 사랑하는 마음만 있다면 누구나 바로 입양해도 된다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(1, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(1, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2번 (정답: 1번 옳을 시) -->
+    <div class="q-box">
+      <div class="q-num">2</div>
+      <div class="q-body">
+        <div class="q-text">보호소에서 배변을 잘하던 강아지도 새로운 환경에 적응하는 과정에서 배변 실수를 할 수 있다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(2, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(2, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3번 (정답: 1번 옳을 시) -->
+    <div class="q-box">
+      <div class="q-num">3</div>
+      <div class="q-body">
+        <div class="q-text">강아지를 입양하면 사료나 용품 외에도 예방접종, 병원비 등 예상하지 못한 비용이 발생할 수 있다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(3, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(3, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4번 (정답: 1번 옳을 시) -->
+    <div class="q-box">
+      <div class="q-num">4</div>
+      <div class="q-body">
+        <div class="q-text">어린 강아지는 성장하면서 크기나 성격이 달라질 수 있으므로 현재 모습뿐만 아니라 앞으로의 생활까지 고려해야 한다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(4, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(4, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5번 (정답: 1번 옳을 시) -->
+    <div class="q-box">
+      <div class="q-num">5</div>
+      <div class="q-body">
+        <div class="q-text">강아지가 처음에는 낯을 가리더라도 충분한 시간과 교감을 통해 새로운 가족에게 적응할 수 있다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(5, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(5, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6번 (정답: 1번 옳을 시) -->
+    <div class="q-box">
+      <div class="q-num">6</div>
+      <div class="q-body">
+        <div class="q-text">보호소에서 배변을 잘하던 강아지도 새로운 환경에 적응하는 과정에서 배변 실수를 할 수 있다.</div>
+        <div class="options">
+          <div class="opt-item" onclick="selectOpt(6, 1)"><span class="circle"></span>是 옳을 시</div>
+          <div class="opt-item" onclick="selectOpt(6, 2)"><span class="circle"></span>非 아닐 비</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-box">
+    <div class="guide-area">
+      <p id="guide-msg">답안을 모두 표시한 뒤 진행자에게 제출해 주세요.</p>
+      <p class="score-txt" id="score-val">정답 수 &nbsp;&nbsp;_____ / 6</p>
+    </div>
+    <button class="submit-btn" id="sub-btn" onclick="grade()">채점 제출</button>
+    <div class="stamp-result" id="stamp-box">
+      <span style="font-size: 9px;">합격인</span>
+      <span style="font-size: 15px;">通</span>
+    </div>
+  </div>
+
+  <div class="footer-msg">도령 아씨의 좋은 배필이 되어 줄 반려인을 기다립니다</div>
+</div>
+
+<script>
+  const userAnswers = {};
+  // 1번: 아닐 비(2), 2번~6번: 옳을 시(1)
+  const correct = { 1: 2, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1 };
+
+  function selectOpt(qNum, optNum) {
+    userAnswers[qNum] = optNum;
+    const qBoxes = document.querySelectorAll('.q-box');
+    const targetBox = qBoxes[qNum - 1];
+    const opts = targetBox.querySelectorAll('.opt-item');
+    opts.forEach(el => el.classList.remove('selected'));
+    opts[optNum - 1].classList.add('selected');
+  }
+
+  function grade() {
+    if (Object.keys(userAnswers).length < 6) {
+      alert("6문항 모두 답을 표시해주시오!");
+      return;
+    }
+    let score = 0;
+    for (let i = 1; i <= 6; i++) {
+      if (userAnswers[i] === correct[i]) score++;
+    }
+    document.getElementById('score-val').innerHTML = `정답 수 &nbsp;&nbsp;<b>${score}</b> / 6`;
+    document.getElementById('sub-btn').style.display = 'none';
+    const stamp = document.getElementById('stamp-box');
+    stamp.style.display = 'flex';
+    
+    if (score === 6) {
+      document.getElementById('guide-msg').innerHTML = "<b>경축! 만점 합격(通)이오!</b><br>스태프에게 이 화면을 보여주고 약과를 받으시오.";
+    } else {
+      document.getElementById('stamp-box').innerHTML = "<span style='font-size:9px;'>불통</span><span style='font-size:15px;'>不</span>";
+      document.getElementById('guide-msg').innerHTML = "아쉽소! 다시 신중히 풀어보시오.";
+    }
+  }
+</script>
+
+</body>
+</html>
